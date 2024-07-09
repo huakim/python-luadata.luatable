@@ -1,5 +1,5 @@
 # Define a LuaMapping class that inherits from the built-in dict class
-def LuaMap(_LuaMappingClass__lua_table):
+def LuaTable(_LuaMappingClass__lua_table):
     # Import the serialize function from the luadata module
     from luadata import serialize as lua_ser
     # Import the lua_type function from the lupa.lua module
@@ -17,7 +17,7 @@ def LuaMap(_LuaMappingClass__lua_table):
         # Implement the __getitem__ method to automatically declare LuaMapping objects for nested dictionaries
         def __getitem__(self, key):
             key = __lua_table[key]
-            return DeclareLuaMapping(key)
+            return LuaTable(key)
 
         def __setitem__(self, key, value):
             __lua_table[key] = value
@@ -52,10 +52,10 @@ def LuaMap(_LuaMappingClass__lua_table):
             return j
 
         def values(self):
-            return map( lambda i: DeclareLuaMapping(self[i]),  self.keys() )
+            return map( lambda i: LuaTable(self[i]),  self.keys() )
 
         def items(self):
-            return map ( lambda i: [i, DeclareLuaMapping(self[i])],  self.keys() )
+            return map ( lambda i: [i, LuaTable(self[i])],  self.keys() )
 
         def __iter__(self):
             return iter(self.keys())
