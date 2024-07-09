@@ -1,9 +1,25 @@
 # Define a LuaMapping class that inherits from the built-in dict class
-def LuaTable(_LuaMappingClass__lua_table):
-    # Import the serialize function from the luadata module
-    from luadata import serialize as lua_ser
-    # Import the lua_type function from the lupa.lua module
-    from lupa.lua import lua_type
+def LuaTable():
+ # Import the serialize function from the luadata module
+ from luadata import serialize as lua_ser
+ # Import the lua_type function from the lupa.lua module
+ from lupa.lua import lua_type, LuaRuntime
+ runtime = None
+
+ def newLuaTable():
+    nonlocal runtime
+    if runtime is None:
+        runtime = LuaRuntime()
+    return runtime.table_from({})
+
+ def LuaTable(*args):
+    len_args = len(args)
+    if len_args > 1:
+        return [LuaTable(i) for i in args]
+    elif len_args > 0:
+        return newLuaTable()
+    else:
+        _LuaMappingClass__lua_table = args[0]
     if lua_type(_LuaMappingClass__lua_table) != 'table':
         # If so, return a LuaMapping object for the key
         return _LuaMappingClass__lua_table
@@ -70,3 +86,6 @@ def LuaTable(_LuaMappingClass__lua_table):
         def __delattr__(self, name):
             del self[name]
     return LuaMappingClass()
+ return LuaTable
+
+LuaTable = LuaTable()
