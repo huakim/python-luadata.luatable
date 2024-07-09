@@ -1,10 +1,21 @@
 # Define a LuaMapping class that inherits from the built-in dict class
-def LuaTable():
+def _():
  # Import the serialize function from the luadata module
  from luadata import serialize as lua_ser
  # Import the lua_type function from the lupa.lua module
  from lupa.lua import lua_type, LuaRuntime
  runtime = None
+ global GetRuntime, SetRuntime, LuaTable
+
+ def GetRuntime():
+    nonlocal runtime
+    if runtime is None:
+        runtime = LuaRuntime()
+    return runtime
+
+ def SetRuntime(_run):
+    nonlocal runtime
+    runtime = _run
 
  def newLuaTable():
     nonlocal runtime
@@ -86,6 +97,5 @@ def LuaTable():
         def __delattr__(self, name):
             del self[name]
     return LuaMappingClass()
- return LuaTable
 
-LuaTable = LuaTable()
+_()
