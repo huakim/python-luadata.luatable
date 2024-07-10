@@ -27,8 +27,8 @@ def _():
     len_args = len(args)
     if len_args > 1:
         return [LuaTable(i) for i in args]
-    elif len_args > 0:
-        return newLuaTable()
+    elif len_args == 0:
+        _LuaMappingClass__lua_table = newLuaTable()
     else:
         _LuaMappingClass__lua_table = args[0]
     if lua_type(_LuaMappingClass__lua_table) != 'table':
